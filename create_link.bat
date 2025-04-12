@@ -1,28 +1,44 @@
 @echo off
 setlocal enabledelayedexpansion
+title ´´½¨·ûºÅÁ´½Ó¹¤¾ß£¨Ö§³ÖÎÄ¼þ/ÎÄ¼þ¼Ð£¬Ö§³ÖÍÏ×§£©
 
-:: è¾“å…¥æºè·¯å¾„
-set "source=%~1"
-:: è¾“å…¥ç›®æ ‡ç›®å½•
-set "destDir=%~2"
+:: Èç¹û²ÎÊý²»¹»£¬ÌáÊ¾ÓÃ»§ÊäÈë
+if "%~1"=="" (
+    set /p source=ÇëÊäÈëÔ´Â·¾¶£¨¿ÉÍÏÈëÎÄ¼þ»òÎÄ¼þ¼Ð£©£º
+) else (
+    set "source=%~1"
+)
 
-:: åˆ¤æ–­è·¯å¾„æ˜¯å¦å­˜åœ¨
+if "%~2"=="" (
+    set /p destDir=ÇëÊäÈëÈíÁ´½ÓÒª·ÅÖÃµÄÄ¿±êÄ¿Â¼£º
+) else (
+    set "destDir=%~2"
+)
+
+:: ÇåÀí¶àÓàÒýºÅ
+set "source=%source:"=%"
+set "destDir=%destDir:"=%"
+
+:: ÅÐ¶ÏÂ·¾¶ÊÇ·ñ´æÔÚ
 if not exist "%source%" (
-    echo æºè·¯å¾„ä¸å­˜åœ¨: %source%
+    echo Ô´Â·¾¶²»´æÔÚ: %source%
+    pause
     exit /b 1
 )
 
-:: èŽ·å–æºè·¯å¾„çš„æœ€åŽä¸€çº§åç§°
+:: »ñÈ¡Á´½ÓÃû³Æ
 for %%F in ("%source%") do set "linkName=%%~nxF"
 
-:: æ‹¼æŽ¥æœ€ç»ˆé“¾æŽ¥è·¯å¾„
+:: Æ´½Ó×îÖÕÁ´½ÓÂ·¾¶
 set "linkPath=%destDir%\%linkName%"
 
-:: åˆ¤æ–­æ˜¯å¦ä¸ºç›®å½•
+:: ÅÐ¶ÏÊÇÄ¿Â¼»¹ÊÇÎÄ¼þ£¬²¢´´½¨¶ÔÓ¦ÀàÐÍµÄÁ´½Ó
 if exist "%source%\" (
     mklink /D "%linkPath%" "%source%"
 ) else (
     mklink "%linkPath%" "%source%"
 )
 
-echo é“¾æŽ¥åˆ›å»ºæˆåŠŸ: %linkPath%
+echo ³É¹¦´´½¨·ûºÅÁ´½Ó:
+echo %linkPath% -> %source%
+pause
