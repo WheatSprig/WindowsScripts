@@ -1,0 +1,4 @@
+{
+  "files.autoGuessEncoding": true,   // 尝试自动识别编码
+  "files.encoding": "gb2312"            // 默认使用 GBK
+}
