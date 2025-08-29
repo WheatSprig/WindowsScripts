@@ -12,12 +12,13 @@ if ($adapter.Status -eq "Up") {
     Enable-NetAdapter -Name $nic -Confirm:$false
 }
 
-# 等待 2 秒，让状态刷新
-Start-Sleep -Seconds 2
-
-# 再次获取网卡状态
-$adapter = Get-NetAdapter -Name $nic
-Write-Host "当前网卡 [$nic] 状态: $($adapter.Status)" -ForegroundColor Green
-
-# 保持窗口 60 秒后自动关闭
-Start-Sleep -Seconds 60
+# 循环等待并不断获取状态，最多 60 秒
+$timeout = 60
+$elapsed = 0
+while ($elapsed -lt $timeout) {
+    $adapter = Get-NetAdapter -Name $nic
+    Write-Host "`r[$elapsed s] 当前网卡 [$nic] 状态: $($adapter.Status)" -NoNewline -ForegroundColor Green
+    Start-Sleep -Seconds 1
+    $elapsed++
+}
+Write-Host ""   # 结束后换一行，避免把提示符挤到行尾
