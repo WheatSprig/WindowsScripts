@@ -17,8 +17,10 @@ $timeout = 60
 $elapsed = 0
 while ($elapsed -lt $timeout) {
     $adapter = Get-NetAdapter -Name $nic
-    Write-Host "`r[$elapsed s] 当前网卡 [$nic] 状态: $($adapter.Status)" -NoNewline -ForegroundColor Green
+    Write-Progress -Activity "等待网卡 [$nic]" `
+                   -Status "当前状态: $($adapter.Status)" `
+                   -SecondsRemaining ($timeout - $elapsed)
     Start-Sleep -Seconds 1
     $elapsed++
 }
-Write-Host ""   # 结束后换一行，避免把提示符挤到行尾
+Write-Progress -Activity "等待网卡 [$nic]" -Completed   # 结束后把进度条清掉
